@@ -1,27 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Cool Test Page</title>
+  <meta charset="UTF-8" />
+  <title>Fun Mode Switcher</title>
   <style>
+    :root {
+      --bg-light: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+      --bg-dark: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+      --text-light: #222;
+      --text-dark: #eee;
+      --btn-light-bg: #00c6ff;
+      --btn-dark-bg: #0072ff;
+    }
+
     body {
-      background: radial-gradient(circle at top, #1e3c72, #2a5298);
-      color: #fff;
+      margin: 0;
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100vh;
-      margin: 0;
-      overflow: hidden;
+      background: var(--bg-dark);
+      color: var(--text-dark);
       text-align: center;
-      animation: bgShift 10s infinite alternate ease-in-out;
+      overflow: hidden;
+      transition: background 0.8s ease, color 0.8s ease;
+      position: relative;
     }
 
-    @keyframes bgShift {
-      0% { background: radial-gradient(circle at top, #1e3c72, #2a5298); }
-      100% { background: radial-gradient(circle at bottom, #0f2027, #203a43); }
+    body.light {
+      background: var(--bg-light);
+      color: var(--text-light);
     }
 
     h1 {
@@ -41,29 +51,92 @@
     }
 
     button {
-      padding: 12px 24px;
+      padding: 14px 28px;
       font-size: 1.1rem;
       border: none;
       border-radius: 12px;
-      background: linear-gradient(45deg, #00c6ff, #0072ff);
+      background: linear-gradient(45deg, var(--btn-light-bg), var(--btn-dark-bg));
       color: #fff;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-      transition: transform 0.2s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      transition: background 0.5s ease, box-shadow 0.3s ease, transform 0.2s ease;
+      margin: 10px;
+      user-select: none;
     }
 
     button:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+      transform: scale(1.1);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.5);
     }
 
     #message {
       margin-top: 1.5em;
       font-style: italic;
-      font-size: 1.5rem;
-      transition: all 0.3s ease;
+      font-size: 1.6rem;
+      min-height: 2em;
+      transition: color 0.8s ease;
     }
 
+    body.light button {
+      background: linear-gradient(45deg, #0072ff, #00c6ff);
+      color: #000;
+    }
+
+    body.light #message {
+      color: #444;
+    }
+
+    /* Dark/Light toggle switch */
+    .switch {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .switch input {
+      display: none;
+    }
+
+    .slider {
+      width: 50px;
+      height: 26px;
+      background: #ccc;
+      border-radius: 15px;
+      position: relative;
+      transition: background 0.3s ease;
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 20px;
+      height: 20px;
+      background: white;
+      border-radius: 50%;
+      transition: transform 0.3s ease;
+    }
+
+    input:checked + .slider {
+      background: #2196f3;
+    }
+
+    input:checked + .slider::before {
+      transform: translateX(24px);
+    }
+
+    .switch-label {
+      margin-left: 10px;
+      font-weight: bold;
+      color: inherit;
+    }
+
+    /* Sparkles */
     .sparkle {
       position: absolute;
       width: 8px;
@@ -72,22 +145,59 @@
       border-radius: 50%;
       opacity: 0.8;
       animation: sparkle 1s ease-out forwards;
+      pointer-events: none;
+      mix-blend-mode: screen;
     }
 
     @keyframes sparkle {
       0% { transform: scale(1); opacity: 1; }
       100% { transform: scale(3); opacity: 0; }
     }
+
+    /* Falling emojis */
+    .emoji-fall {
+      position: fixed;
+      font-size: 24px;
+      user-select: none;
+      pointer-events: none;
+      animation-name: fall;
+      animation-timing-function: linear;
+      animation-iteration-count: infinite;
+      opacity: 0.8;
+    }
+
+    @keyframes fall {
+      0% {
+        transform: translateY(-50px) rotate(0deg);
+        opacity: 0.8;
+      }
+      100% {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
   </style>
 </head>
 <body>
 
-  <h1>🌈 Welcome to the Fun Zone!</h1>
+  <div class="switch">
+    <input type="checkbox" id="modeToggle" />
+    <label for="modeToggle" class="slider"></label>
+    <span class="switch-label">Light Mode</span>
+  </div>
+
+  <h1> Welcome to the Fun Zone!</h1>
   <p>Click the magic button below 👇</p>
-  <button onclick="showMessage(event)">✨ Do Something Cool</button>
+  <button id="magicBtn">✨ Do Something Cool</button>
   <p id="message"></p>
 
   <script>
+    const body = document.body;
+    const toggle = document.getElementById('modeToggle');
+    const switchLabel = document.querySelector('.switch-label');
+    const messageEl = document.getElementById('message');
+    const magicBtn = document.getElementById('magicBtn');
+
     const messages = [
       "🚀 You just launched some JavaScript!",
       "🎉 This page is alive!",
@@ -98,20 +208,46 @@
       "🦄 You summoned a unicorn!"
     ];
 
-    function showMessage(e) {
+    const emojis = ['🌟','✨','💫','🎉','🔥','🦄','🎈','🍀','💥'];
+
+    toggle.addEventListener('change', () => {
+      if(toggle.checked){
+        body.classList.remove('light');
+        switchLabel.textContent = 'Dark Mode';
+      } else {
+        body.classList.add('light');
+        switchLabel.textContent = 'Light Mode';
+      }
+    });
+
+    magicBtn.addEventListener('click', (e) => {
       const msg = messages[Math.floor(Math.random() * messages.length)];
-      const messageEl = document.getElementById('message');
       messageEl.textContent = msg;
 
-      for (let i = 0; i < 15; i++) {
+      for (let i = 0; i < 20; i++) {
         const sparkle = document.createElement('div');
         sparkle.className = 'sparkle';
-        sparkle.style.left = (e.clientX + (Math.random() * 100 - 50)) + 'px';
-        sparkle.style.top = (e.clientY + (Math.random() * 100 - 50)) + 'px';
-        document.body.appendChild(sparkle);
+        sparkle.style.left = (e.clientX + (Math.random() * 80 - 40)) + 'px';
+        sparkle.style.top = (e.clientY + (Math.random() * 80 - 40)) + 'px';
+        body.appendChild(sparkle);
         setTimeout(() => sparkle.remove(), 1000);
       }
+    });
+
+    function createFallingEmoji() {
+      const emoji = emojis[Math.floor(Math.random() * emojis.length)];
+      const el = document.createElement('div');
+      el.textContent = emoji;
+      el.className = 'emoji-fall';
+      el.style.left = Math.random() * 100 + 'vw';
+      el.style.animationDuration = (5 + Math.random() * 5) + 's';
+      el.style.fontSize = (14 + Math.random() * 24) + 'px';
+      body.appendChild(el);
+
+      setTimeout(() => el.remove(), 10000);
     }
+
+    setInterval(createFallingEmoji, 400);
   </script>
 
 </body>
