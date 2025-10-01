@@ -1,11 +1,118 @@
-<!-- index.html -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <title>My Free Website</title>
+  <meta charset="UTF-8">
+  <title>Cool Test Page</title>
+  <style>
+    body {
+      background: radial-gradient(circle at top, #1e3c72, #2a5298);
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      overflow: hidden;
+      text-align: center;
+      animation: bgShift 10s infinite alternate ease-in-out;
+    }
+
+    @keyframes bgShift {
+      0% { background: radial-gradient(circle at top, #1e3c72, #2a5298); }
+      100% { background: radial-gradient(circle at bottom, #0f2027, #203a43); }
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      margin-bottom: 0.5em;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.05); opacity: 0.8; }
+    }
+
+    p {
+      font-size: 1.3rem;
+      margin-bottom: 1em;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(45deg, #00c6ff, #0072ff);
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      transition: transform 0.2s ease, box-shadow 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    }
+
+    #message {
+      margin-top: 1.5em;
+      font-style: italic;
+      font-size: 1.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .sparkle {
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: #fff;
+      border-radius: 50%;
+      opacity: 0.8;
+      animation: sparkle 1s ease-out forwards;
+    }
+
+    @keyframes sparkle {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(3); opacity: 0; }
+    }
+  </style>
 </head>
 <body>
-  <h1>Hello, world!</h1>
-  <p>This is my free website!</p>
+
+  <h1>🌈 Welcome to the Fun Zone!</h1>
+  <p>Click the magic button below 👇</p>
+  <button onclick="showMessage(event)">✨ Do Something Cool</button>
+  <p id="message"></p>
+
+  <script>
+    const messages = [
+      "🚀 You just launched some JavaScript!",
+      "🎉 This page is alive!",
+      "😎 You're coding like a boss!",
+      "✨ Magic unlocked!",
+      "🔥 Now you're having fun!",
+      "💥 Something awesome just happened!",
+      "🦄 You summoned a unicorn!"
+    ];
+
+    function showMessage(e) {
+      const msg = messages[Math.floor(Math.random() * messages.length)];
+      const messageEl = document.getElementById('message');
+      messageEl.textContent = msg;
+
+      for (let i = 0; i < 15; i++) {
+        const sparkle = document.createElement('div');
+        sparkle.className = 'sparkle';
+        sparkle.style.left = (e.clientX + (Math.random() * 100 - 50)) + 'px';
+        sparkle.style.top = (e.clientY + (Math.random() * 100 - 50)) + 'px';
+        document.body.appendChild(sparkle);
+        setTimeout(() => sparkle.remove(), 1000);
+      }
+    }
+  </script>
+
 </body>
 </html>
