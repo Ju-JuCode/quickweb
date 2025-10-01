@@ -1,74 +1,11 @@
+<!-- index.html -->
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>Cool Test Page</title>
-  <style>
-    body {
-      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
-      color: #fff;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      margin: 0;
-      text-align: center;
-    }
-
-    h1 {
-      font-size: 3rem;
-      margin-bottom: 0.5em;
-    }
-
-    p {
-      font-size: 1.3rem;
-      margin-bottom: 1em;
-    }
-
-    button {
-      padding: 10px 20px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 8px;
-      background-color: #00c6ff;
-      color: #000;
-      cursor: pointer;
-      transition: 0.3s ease;
-    }
-
-    button:hover {
-      background-color: #0072ff;
-      color: #fff;
-    }
-
-    #message {
-      margin-top: 1em;
-      font-style: italic;
-    }
-  </style>
+  <title>My Free Website</title>
 </head>
 <body>
-
-  <h1>🌟 Welcome to My Cool Test Page!</h1>
-  <p>Click the button to see some magic.</p>
-  <button onclick="showMessage()">Do Something Cool</button>
-  <p id="message"></p>
-
-  <script>
-    function showMessage() {
-      const messages = [
-        "🚀 You just launched some JavaScript!",
-        "🎉 Wow, this button really works!",
-        "😎 You're doing great!",
-        "✨ Magic just happened!",
-        "🔥 Keep experimenting!"
-      ];
-      const randomMessage = messages[Math.floor(Math.random() * messages.length)];
-      document.getElementById('message').textContent = randomMessage;
-    }
-  </script>
-
+  <h1>Hello, world!</h1>
+  <p>This is my free website!</p>
 </body>
 </html>
